@@ -12,12 +12,11 @@ import java.time.LocalDateTime
 sealed class ApiException(message: String) : Throwable(message) {
     data object NotAuthorized : ApiException("Not authorized")
     data object NetworkException : ApiException("Not connected")
-    data object UnknownException: ApiException("Unknown exception")
+    data object UnknownException : ApiException("Unknown exception")
 }
 
-class ErrorLogger<E : Throwable> {
-
-    val errors = mutableListOf<Pair<LocalDateTime, E>>()
+class ErrorLogger<in E : Throwable> {
+    private val errors = mutableListOf<Pair<LocalDateTime, E>>()
 
     fun log(response: NetworkResponse<*, E>) {
         if (response is Failure) {
